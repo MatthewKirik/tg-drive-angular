@@ -1,14 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { loadFull } from 'tsparticles';
 import { ClickMode, Container, Engine, HoverMode, MoveDirection, OutMode } from 'tsparticles-engine';
+import { TelegramLoginService } from './share/telegram-login.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'TgDrive';
+  loggedIn: boolean = false;
+
+  constructor(private loginService: TelegramLoginService) {
+  }
+
+  ngOnInit(): void {
+    this.loginService.loggedIn$.subscribe(isLoggedIn => this.loggedIn = isLoggedIn);
+  }
 
   particlesOptions = {
     background: {
