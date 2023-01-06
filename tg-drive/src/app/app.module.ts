@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgParticlesModule } from 'ng-particles';
+import { CookieService } from 'ngx-cookie-service';
 import { ButtonModule } from 'primeng/button';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,7 +23,9 @@ import { TelegramLoginWidgetComponent } from './share/telegram-login-widget/tele
     ButtonModule,
     NgParticlesModule,
   ],
-  providers: [],
+  providers: [
+    [CookieService],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
