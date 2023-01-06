@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service/public-api';
+import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
@@ -20,14 +20,24 @@ export class TelegramLoginService {
       this.loginViaTelegram(loginData);
   }
 
+  signOut() {
+    this.ngZone.run(() =>
+    {
+        this.cookieService.delete('tg-hash');
+        this.cookieService.delete('tg-data');
+        sessionStorage.setItem('logged-in', 'false');
+        this.loggedIn$.next(false);
+    });
+  }
+
   private loginViaTelegram(loginData: any) {
     this.ngZone.run(() =>
     {
       if (!!loginData) {
-        sessionStorage.setItem('logged-in', 'true');
         this.cookieService.set('tg-hash', loginData.hash);
         const dataCheckString = this.getDataCheckString(loginData);
         this.cookieService.set('tg-data', dataCheckString);
+        sessionStorage.setItem('logged-in', 'true');
         this.loggedIn$.next(true);
       }
     });

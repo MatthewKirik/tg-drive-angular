@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LandingComponent } from './landing/landing.component';
 import { TelegramLoginWidgetComponent } from './share/telegram-login-widget/telegram-login-widget.component';
+import { HeaderComponent } from './home/header/header.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TelegramLoginWidgetComponent } from './share/telegram-login-widget/tele
     HomeComponent,
     LandingComponent,
     TelegramLoginWidgetComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
