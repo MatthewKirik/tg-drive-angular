@@ -28,10 +28,6 @@ export class AppComponent implements OnInit {
     fpsLimit: 30,
     interactivity: {
       events: {
-        onClick: {
-          enable: true,
-          mode: ClickMode.push,
-        },
         onHover: {
           enable: true,
           mode: HoverMode.repulse,
@@ -39,9 +35,6 @@ export class AppComponent implements OnInit {
         resize: true,
       },
       modes: {
-        push: {
-          quantity: 4,
-        },
         repulse: {
           distance: 200,
           duration: 0.4,
@@ -78,7 +71,7 @@ export class AppComponent implements OnInit {
           enable: true,
           area: 800,
         },
-        value: 40,
+        value: 30,
       },
       opacity: {
         value: 0.8,

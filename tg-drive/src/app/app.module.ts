@@ -1,9 +1,15 @@
 import { NgModule } from '@angular/core';
+import { FormsModule }   from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgParticlesModule } from 'ng-particles';
 import { CookieService } from 'ngx-cookie-service';
 import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';
+import { SplitterModule } from 'primeng/splitter';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { InputTextModule } from 'primeng/inputtext';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,11 +34,17 @@ import { WithCredentialsInterceptor } from './share/with-credentials-interceptor
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ButtonModule,
     NgParticlesModule,
     TreeModule,
+    SplitterModule,
+    ContextMenuModule,
+    OverlayPanelModule,
+    InputTextModule,
+    FormsModule,
   ],
   providers: [
     CookieService,

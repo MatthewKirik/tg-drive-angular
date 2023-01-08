@@ -5,6 +5,7 @@ export interface DirectoryDto {
   readAccessKey: string | null;
   writeAccessKey: string | null;
   parentId: number | null;
+  leaf: boolean;
 }
 
 export interface FileDto {
