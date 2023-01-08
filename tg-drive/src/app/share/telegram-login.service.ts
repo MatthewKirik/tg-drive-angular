@@ -34,9 +34,9 @@ export class TelegramLoginService {
     this.ngZone.run(() =>
     {
       if (!!loginData) {
-        this.cookieService.set('tg-hash', loginData.hash);
         const dataCheckString = this.getDataCheckString(loginData);
-        this.cookieService.set('tg-data', dataCheckString);
+        sessionStorage.setItem('tg-hash', loginData.hash);
+        sessionStorage.setItem('tg-data', dataCheckString);
         sessionStorage.setItem('logged-in', 'true');
         this.loggedIn$.next(true);
       }
