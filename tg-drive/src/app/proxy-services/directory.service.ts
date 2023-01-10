@@ -29,7 +29,15 @@ export class DirectoryService {
   public getChildren(directoryId: number): Promise<DirectoryDto[]> {
     return lastValueFrom(
       this.http.get<DirectoryDto[]>(this.createUrl('GetChildren'), {
-        params: { directoryId }
+        params: { directoryId },
+      })
+    );
+  }
+
+  public removeDirectory(directoryId: number): Promise<DirectoryDto> {
+    return lastValueFrom(
+      this.http.delete<DirectoryDto>(this.createUrl('RemoveDirectory'), {
+        params: { directoryId },
       })
     );
   }

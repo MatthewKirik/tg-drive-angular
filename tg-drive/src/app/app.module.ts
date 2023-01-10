@@ -10,6 +10,8 @@ import { SplitterModule } from 'primeng/splitter';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TableModule } from 'primeng/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +23,8 @@ import { FileManagementComponent } from './home/file-management/file-management.
 import { DirectoryTreeComponent } from './home/file-management/directory-tree/directory-tree.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { WithCredentialsInterceptor } from './share/with-credentials-interceptor';
+import { ConfirmationService } from 'primeng/api';
+import { FileListComponent } from './home/file-management/file-list/file-list.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +35,7 @@ import { WithCredentialsInterceptor } from './share/with-credentials-interceptor
     HeaderComponent,
     FileManagementComponent,
     DirectoryTreeComponent,
+    FileListComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,8 @@ import { WithCredentialsInterceptor } from './share/with-credentials-interceptor
     OverlayPanelModule,
     InputTextModule,
     FormsModule,
+    ConfirmDialogModule,
+    TableModule,
   ],
   providers: [
     CookieService,
@@ -53,6 +60,7 @@ import { WithCredentialsInterceptor } from './share/with-credentials-interceptor
       useClass: WithCredentialsInterceptor,
       multi: true,
     },
+    ConfirmationService,
   ],
   bootstrap: [AppComponent],
 })

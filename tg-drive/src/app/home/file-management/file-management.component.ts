@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DirectoryDto } from 'src/app/proxy-services/models';
 
 @Component({
   selector: 'app-file-management',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./file-management.component.scss']
 })
 export class FileManagementComponent {
-
+  selectedDirectory: DirectoryDto = undefined!;
 }

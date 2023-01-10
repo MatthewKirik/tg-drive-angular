@@ -1,5 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { TreeNode } from 'primeng/api';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { ConfirmationService, TreeNode } from 'primeng/api';
 import { DirectoryService } from 'src/app/proxy-services/directory.service';
 import { DirectoryDto } from 'src/app/proxy-services/models';
 import { MenuItem } from 'primeng/api';
@@ -25,12 +32,25 @@ export class DirectoryTreeComponent implements OnInit {
   directoryMenu: MenuItem[];
   selectedDirectoryNode: TreeNode<Directory> = undefined!;
 
-  constructor(private directoryService: DirectoryService) {
+  @Input()
+  selectedDirectory: DirectoryDto = undefined!;
+  @Output()
+  selectedDirectoryChange = new EventEmitter<DirectoryDto>();
+
+  constructor(
+    private directoryService: DirectoryService,
+    private confirmationService: ConfirmationService
+  ) {
     this.directoryMenu = [
       {
         label: 'Add Subdirectory',
         icon: 'pi pi-plus',
         command: (x) => this.addSubdir(this.selectedDirectoryNode),
+      },
+      {
+        label: 'Refresh',
+        icon: 'pi pi-refresh',
+        command: (x) => this.refreshDirectory(this.selectedDirectoryNode),
       },
       {
         label: 'Remove',
@@ -55,17 +75,44 @@ export class DirectoryTreeComponent implements OnInit {
     if (!node) return;
     this.removeAllAdding();
     await this.expandNode(node);
-    const tempNode = this.createNode({
-      name: '',
-      parentId: node.data?.dto.id,
-      leaf: true,
-    } as DirectoryDto, node, true);
+    const tempNode = this.createNode(
+      {
+        name: '',
+        parentId: node.data?.dto.id,
+        leaf: true,
+      } as DirectoryDto,
+      node,
+      true
+    );
     node.children?.unshift(tempNode);
   }
 
-  async removeDirectory(node: TreeNode<Directory>) {
+  async refreshDirectory(node: TreeNode<Directory>) {
     if (!node) return;
-    // TODO remove
+    await this.expandNode(node);
+    if (this.selectedDirectoryNode === node) {
+      this.selectedDirectoryChange.emit({...this.selectedDirectory});
+    }
+  }
+
+  removeDirectory(node: TreeNode<Directory>) {
+    if (!node) return;
+    this.confirmationService.confirm({
+      accept: async () => {
+        const result = await this.directoryService.removeDirectory(
+          node.data!.dto.id
+        );
+        if (!!result) {
+          node.parent!.children = node.parent!.children?.filter(
+            (x) => x.data?.dto.id !== node.data?.dto.id
+          );
+        }
+      },
+      closeOnEscape: true,
+      message: `Are you sure you want to delete the directory '${node.data?.dto.name}?\n
+      The folder and its children will be lost permanently,\n
+      though you can find the related messages in your storage channel.'`,
+    });
   }
 
   removeAllAdding() {
@@ -76,7 +123,7 @@ export class DirectoryTreeComponent implements OnInit {
 
   removeNodeAdding(node: TreeNode<Directory>) {
     if (node.children?.length) {
-      node.children = node.children.filter(x => !x.data?.adding);
+      node.children = node.children.filter((x) => !x.data?.adding);
       for (const child of node.children) {
         this.removeNodeAdding(child);
       }
@@ -96,6 +143,11 @@ export class DirectoryTreeComponent implements OnInit {
         node.children = children.map((x) => this.createNode(x, node));
         this.loading = false;
       });
+  }
+
+  onSelectionChange(directory: TreeNode<Directory>): void {
+    this.selectedDirectory = directory.data!.dto;
+    this.selectedDirectoryChange.emit(this.selectedDirectory);
   }
 
   cancelAdding() {
